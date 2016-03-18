@@ -37,6 +37,7 @@ public:
 
 // Implementation
 public:
+	void ddaLine(CDC *pDC,int x0,int y0,int x1,int y1,COLORREF color);
 	virtual ~CCGView();
 #ifdef _DEBUG
 	virtual void AssertValid() const;

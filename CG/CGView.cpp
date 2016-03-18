@@ -58,6 +58,8 @@ void CCGView::OnDraw(CDC* pDC)
 	CCGDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	// TODO: add draw code for native data here
+
+	ddaLine(pDC,100,100,200,200,RGB(255,0,0));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -102,3 +104,25 @@ CCGDoc* CCGView::GetDocument() // non-debug version is inline
 
 /////////////////////////////////////////////////////////////////////////////
 // CCGView message handlers
+
+void CCGView::ddaLine(CDC *pDC, int x0, int y0, int x1, int y1, COLORREF color)
+{
+	float x,y,dx,dy;
+	int i,length;
+
+	length = abs(x0 - x1);
+	if(length < abs(y0 - y1))
+		length = abs(y0 - y1);
+	dx = (float)length / abs(x0 - x1);
+	dy = (float)length / abs(y0 - y1);
+	x = (float)x0;
+	y = (float)y0;
+
+	for(i=1;i<length;i++)
+	{
+		pDC->SetPixel(x,y,color);
+		x = x + dx;
+		y = y + dy;
+	}
+
+}
