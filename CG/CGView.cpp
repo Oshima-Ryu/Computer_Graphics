@@ -9,6 +9,8 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
+#define BORDER RGB(0,0,0)
+#define FILLCOLOR RGB(255,0,0)
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
@@ -20,8 +22,7 @@ IMPLEMENT_DYNCREATE(CCGView, CView)
 
 BEGIN_MESSAGE_MAP(CCGView, CView)
 	//{{AFX_MSG_MAP(CCGView)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
+	ON_WM_LBUTTONDOWN()
 	//}}AFX_MSG_MAP
 	// Standard printing commands
 	ON_COMMAND(ID_FILE_PRINT, CView::OnFilePrint)
@@ -59,7 +60,13 @@ void CCGView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	// TODO: add draw code for native data here
 
-	ddaLine(pDC,100,100,200,200,RGB(255,0,0));
+	//ddaLine(pDC,100,100,200,200,BORDOR);
+	pDC->MoveTo(100,100);
+	pDC->LineTo(100,200);
+	pDC->LineTo(200,200);
+	pDC->LineTo(200,100);
+	pDC->LineTo(100,100);
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -120,9 +127,38 @@ void CCGView::ddaLine(CDC *pDC, int x0, int y0, int x1, int y1, COLORREF color)
 
 	for(i=1;i<length;i++)
 	{
-		pDC->SetPixel(x,y,color);
+		pDC->SetPixel((int)x,(int)y,color);
 		x = x + dx;
 		y = y + dy;
+	}
+
+}
+
+void CCGView::OnLButtonDown(UINT nFlags, CPoint point) 
+{
+	// TODO: Add your message handler code here and/or call default
+	CDC *pDC = GetDC();
+	//pDC->TextOut(point.x,point.y,"HHHHH");
+	FloodFill4(pDC,point.x,point.y,BORDER,FILLCOLOR);
+	
+	
+	
+	
+	CView::OnLButtonDown(nFlags, point);
+}
+
+void CCGView::FloodFill4(CDC *pDC,int x, int y, COLORREF bordercolor, COLORREF newcolor)
+{
+	
+	COLORREF color = pDC->GetPixel(x,y);
+	if(color != newcolor && color != bordercolor)
+	{
+		pDC->SetPixel(x,y,newcolor);
+		FloodFill4(pDC,x-1,y,BORDER,FILLCOLOR);
+		FloodFill4(pDC,x+1,y,BORDER,FILLCOLOR);
+		FloodFill4(pDC,x,y-1,BORDER,FILLCOLOR);
+		FloodFill4(pDC,x,y+1,BORDER,FILLCOLOR);
+
 	}
 
 }

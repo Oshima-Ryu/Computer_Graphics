@@ -37,6 +37,7 @@ public:
 
 // Implementation
 public:
+	void FloodFill4(CDC *pDC,int x,int y,COLORREF oldcolor,COLORREF newcolor );
 	void ddaLine(CDC *pDC,int x0,int y0,int x1,int y1,COLORREF color);
 	virtual ~CCGView();
 #ifdef _DEBUG
@@ -49,8 +50,7 @@ protected:
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CCGView)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
